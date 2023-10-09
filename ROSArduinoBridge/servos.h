@@ -1,44 +1,20 @@
 #ifndef SERVOS_H
 #define SERVOS_H
 
+#ifdef USE_SERVOS
+#include <Servo.h>
 
-#define N_SERVOS 2
+#define tilServoPin 10  // Servo #1
+#define panServoPin 9   // Servo #2
 
-// This delay in milliseconds determines the pause 
-// between each one degree step the servo travels.  Increasing 
-// this number will make the servo sweep more slowly.  
-// Decreasing this number will make the servo sweep more quickly.
-// Zero is the default number and will make the servos spin at
-// full speed.  150 ms makes them spin very slowly.
-int stepDelay [N_SERVOS] = { 0, 0 }; // ms
+int tiltMaxLim = 90;
+int tiltMinLim = 10;
 
-// Pins
-byte servoPins [N_SERVOS] = { 3, 4 };
+Servo panServo;
+Servo tilServo;
 
-// Initial Position
-byte servoInitPosition [N_SERVOS] = { 90, 90 }; // [0, 180] degrees
+void initServos();
+void setServosAngles(int pan_angle, int tilt_angle);
 
-
-class SweepServo
-{
-  public:
-    SweepServo();
-    void initServo(
-        int servoPin,
-        int stepDelayMs,
-        int initPosition);
-    void doSweep();
-    void setTargetPosition(int position);
-    Servo getServo();
-
-  private:
-    Servo servo;
-    int stepDelayMs;
-    int currentPositionDegrees;
-    int targetPositionDegrees;
-    long lastSweepCommand;
-};
-
-SweepServo servos [N_SERVOS];
-
-#endif
+#endif  // USE_SERVOS
+#endif  // SERVOS_H

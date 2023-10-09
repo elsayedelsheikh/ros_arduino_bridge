@@ -1,78 +1,18 @@
-/***************************************************************
-   Servo Sweep - by Nathaniel Gallinger
-
-   Sweep servos one degree step at a time with a user defined
-   delay in between steps.  Supports changing direction 
-   mid-sweep.  Important for applications such as robotic arms
-   where the stock servo speed is too fast for the strength
-   of your system.
-
- *************************************************************/
-
 #ifdef USE_SERVOS
 
+void initServos() {
+  panServo.attach(panServoPin);
+  tilServo.attach(tilServoPin);
 
-// Constructor
-SweepServo::SweepServo()
-{
-  this->currentPositionDegrees = 0;
-  this->targetPositionDegrees = 0;
-  this->lastSweepCommand = 0;
+  setServosAngles(90, 60);
 }
 
+void setServosAngles(int pan_angle, int tilt_angle) {
+  panServo.write(pan_angle);
 
-// Init
-void SweepServo::initServo(
-    int servoPin,
-    int stepDelayMs,
-    int initPosition)
-{
-  this->servo.attach(servoPin);
-  this->stepDelayMs = stepDelayMs;
-  this->currentPositionDegrees = initPosition;
-  this->targetPositionDegrees = initPosition;
-  this->lastSweepCommand = millis();
+  if (tilt_angle > tiltMaxLim) tilt_angle = tiltMaxLim;
+  if (tilt_angle < tiltMinLim) tilt_angle = tiltMinLim;
+  tilServo.write(tilt_angle);
 }
-
-
-// Perform Sweep
-void SweepServo::doSweep()
-{
-
-  // Get ellapsed time
-  int delta = millis() - this->lastSweepCommand;
-
-  // Check if time for a step
-  if (delta > this->stepDelayMs) {
-    // Check step direction
-    if (this->targetPositionDegrees > this->currentPositionDegrees) {
-      this->currentPositionDegrees++;
-      this->servo.write(this->currentPositionDegrees);
-    }
-    else if (this->targetPositionDegrees < this->currentPositionDegrees) {
-      this->currentPositionDegrees--;
-      this->servo.write(this->currentPositionDegrees);
-    }
-    // if target == current position, do nothing
-
-    // reset timer
-    this->lastSweepCommand = millis();
-  }
-}
-
-
-// Set a new target position
-void SweepServo::setTargetPosition(int position)
-{
-  this->targetPositionDegrees = position;
-}
-
-
-// Accessor for servo object
-Servo SweepServo::getServo()
-{
-  return this->servo;
-}
-
 
 #endif
