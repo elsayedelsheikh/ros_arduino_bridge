@@ -44,8 +44,13 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
-#define USE_BASE
-#define USE_SERVOS
+// #define USE_BASE
+// #define USE_SERVOS
+#define USE_RELAY_CONTROL
+
+#ifdef USE_RELAY_CONTROL
+#include "relay_control.h"
+#endif
 
 #ifdef USE_BASE
 #define L298_SHEILD_MOTOR_DRIVER
@@ -132,8 +137,16 @@ int runCommand() {
       setMotorSpeeds(arg1, arg2);
       Serial.println("OK");
       break;
-
 #endif
+
+#ifdef USE_RELAY_CONTROL
+    case RELAY_CONTROL:
+      toggleRelays(arg1, arg2);
+      Serial.println("OK");
+      break;
+#endif
+
+// Default case
     default:
       Serial.println("Invalid Command");
       break;
@@ -145,6 +158,10 @@ void setup() {
   Serial.begin(BAUDRATE);
 #ifdef USE_BASE
   initMotorController();
+#endif
+
+#ifdef USE_RELAY_CONTROL
+  initRelays();
 #endif
 
 #ifdef USE_SERVOS

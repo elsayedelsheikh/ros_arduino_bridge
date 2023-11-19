@@ -6,6 +6,7 @@
 #define COMMANDS_H
 
 #define GET_BAUDRATE 'b'
+#define RELAY_CONTROL 'p'
 #define MOTOR_SPEEDS 'm'
 #define RESET 'r'
 #define SERVO_WRITE 's'
