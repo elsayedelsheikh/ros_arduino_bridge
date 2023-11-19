@@ -1,8 +1,8 @@
 #ifdef USE_RELAY_CONTROL
 
 void initRelays() {
-  pinMode(relayPin1, OUTPUT);
-  pinMode(relayPin2, OUTPUT);
+  pinMode(relayPin1, OUTPUT);digitalWrite(relayPin1, LOW);
+  pinMode(relayPin2, OUTPUT);digitalWrite(relayPin2, LOW);
 }
 
 void toggleRelays(bool relay_1, bool relay_2) {

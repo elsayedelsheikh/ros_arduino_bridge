@@ -118,6 +118,9 @@ int runCommand() {
 #ifdef USE_SERVOS
       initServos();
 #endif
+#ifdef USE_RELAY_CONTROL
+      initRelays();
+#endif
       break;
 
 #ifdef USE_SERVOS
