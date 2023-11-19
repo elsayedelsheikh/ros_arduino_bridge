@@ -142,7 +142,11 @@ int runCommand() {
 #ifdef USE_RELAY_CONTROL
     case RELAY_CONTROL:
       toggleRelays(arg1, arg2);
-      Serial.println("OK");
+      Serial.print("OK");
+      Serial.print(" ");
+      Serial.print(arg1);
+      Serial.print(" ");
+      Serial.println(arg2);
       break;
 #endif
 
