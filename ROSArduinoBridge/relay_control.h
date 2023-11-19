@@ -2,7 +2,7 @@
 #define RELAY_CONTROL_H
 
 #ifdef USE_RELAY_CONTROL
-  const int relayPin1 = 13;
+  const int relayPin1 = 2;
   const int relayPin2 = 3;
 
   void initRelays();
