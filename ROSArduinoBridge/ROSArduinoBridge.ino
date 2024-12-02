@@ -215,6 +215,9 @@ int runCommand() {
       moving = 0;
     }
     else moving = 1;
+    if (arg1 > 0)        left_motor_direction = 2;  // Forward
+    else if (arg1 < 0)   left_motor_direction = -2;  // Backward
+    else                 left_motor_direction = 0;  // Stop (optional, if you want no counting)
     leftPID.TargetTicksPerFrame = arg1;
     rightPID.TargetTicksPerFrame = arg2;
     Serial.println("OK"); 
@@ -224,6 +227,9 @@ int runCommand() {
     lastMotorCommand = millis();
     resetPID();
     moving = 0; // Sneaky way to temporarily disable the PID
+    if (arg1 > 0)        left_motor_direction = 2;  // Forward
+    else if (arg1 < 0)   left_motor_direction = -2;  // Backward
+    else                 left_motor_direction = 0;  // Stop (optional, if you want no counting)
     setMotorSpeeds(arg1, arg2);
     Serial.println("OK"); 
     break;
@@ -254,18 +260,16 @@ void setup() {
   #ifdef ARDUINO_ENC_COUNTER
     //set as inputs
     DDRD &= ~(1<<LEFT_ENC_PIN_A);
-    DDRD &= ~(1<<LEFT_ENC_PIN_B);
     DDRC &= ~(1<<RIGHT_ENC_PIN_A);
     DDRC &= ~(1<<RIGHT_ENC_PIN_B);
     
     //enable pull up resistors
     PORTD |= (1<<LEFT_ENC_PIN_A);
-    PORTD |= (1<<LEFT_ENC_PIN_B);
     PORTC |= (1<<RIGHT_ENC_PIN_A);
     PORTC |= (1<<RIGHT_ENC_PIN_B);
     
     // tell pin change mask to listen to left encoder pins
-    PCMSK2 |= (1 << LEFT_ENC_PIN_A)|(1 << LEFT_ENC_PIN_B);
+    PCMSK2 |= (1 << LEFT_ENC_PIN_A);
     // tell pin change mask to listen to right encoder pins
     PCMSK1 |= (1 << RIGHT_ENC_PIN_A)|(1 << RIGHT_ENC_PIN_B);
     

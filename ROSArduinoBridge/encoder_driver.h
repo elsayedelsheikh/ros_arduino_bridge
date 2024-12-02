@@ -7,8 +7,9 @@
   //below can be changed, but should be PORTD pins; 
   //otherwise additional changes in the code are required
   #define LEFT_ENC_PIN_A PD2  //pin 2
-  #define LEFT_ENC_PIN_B PD3  //pin 3
-  
+  #define LEFT_ENC_PIN_B PD3  //pin 3 (NOT USED)
+  volatile int left_motor_direction = 2;  // Default direction is forward (2 to match with the right counter) = 2 /or -2 (Backward)
+
   //below can be changed, but should be PORTC pins
   #define RIGHT_ENC_PIN_A PC4  //pin A4
   #define RIGHT_ENC_PIN_B PC5   //pin A5
