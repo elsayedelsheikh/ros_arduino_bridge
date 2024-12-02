@@ -97,13 +97,7 @@ void doPID(SetPointInfo * p) {
   * allow turning changes, see http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-tuning-changes/
   */
     p->ITerm += Ki * Perror;
-
-  // Check if MIN_PWM is achieved
-  if (output > 0 && output < MIN_PWM)
-    output = MIN_PWM;
-  else if (output < 0 && output > -MIN_PWM)
-    output = -output;
-
+    
   p->output = output;
   p->PrevInput = input;
 }

@@ -73,8 +73,8 @@
 #define BAUDRATE     57600
 
 /* Maximum PWM signal */
-#define MAX_PWM        255
-#define MIN_PWM        75
+#define MAX_PWM            255
+#define MIN_MotorSpeedCMD  35
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
@@ -150,6 +150,14 @@ void resetCommand() {
   index = 0;
 }
 
+void setPWMLowerBound(long &cmd) {
+  // Check if MIN_PWM is achieved
+  if (cmd > 0 && cmd < MIN_MotorSpeedCMD)
+    cmd = MIN_MotorSpeedCMD;
+  else if (cmd < 0 && cmd > -MIN_MotorSpeedCMD)
+    cmd = -MIN_MotorSpeedCMD;
+}
+
 /* Run a command.  Commands are defined in commands.h */
 int runCommand() {
   int i = 0;
@@ -219,6 +227,9 @@ int runCommand() {
     if (arg1 > 0)        left_motor_direction = 2;  // Forward
     else if (arg1 < 0)   left_motor_direction = -2;  // Backward
     else                 left_motor_direction = 0;  // Stop (optional, if you want no counting)
+    // Ensure Min PWM is met
+    setPWMLowerBound(arg1);
+    setPWMLowerBound(arg2);
     leftPID.TargetTicksPerFrame = arg1;
     rightPID.TargetTicksPerFrame = arg2;
     Serial.println("OK"); 
