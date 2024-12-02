@@ -98,6 +98,12 @@ void doPID(SetPointInfo * p) {
   */
     p->ITerm += Ki * Perror;
 
+  // Check if MIN_PWM is achieved
+  if (output > 0 && output < MIN_PWM)
+    output = MIN_PWM;
+  else if (output < 0 && output > -MIN_PWM)
+    output = -output;
+
   p->output = output;
   p->PrevInput = input;
 }

@@ -74,6 +74,7 @@
 
 /* Maximum PWM signal */
 #define MAX_PWM        255
+#define MIN_PWM        75
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
