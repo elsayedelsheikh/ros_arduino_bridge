@@ -73,23 +73,25 @@
   }
 
   void setMotorSpeed(int i, int spd) {
-    unsigned char reverse = 0;
+    bool reverse = false;
   
     if (spd < 0)
     {
       spd = -spd;
-      reverse = 1;
+      reverse = true;
     }
     if (spd > 255)
       spd = 255;
     
     if (i == LEFT) { 
-      if      (reverse == 0) { analogWrite(LEFT_MOTOR_FORWARD, spd); analogWrite(LEFT_MOTOR_BACKWARD, 0); }
-      else if (reverse == 1) { analogWrite(LEFT_MOTOR_BACKWARD, spd); analogWrite(LEFT_MOTOR_FORWARD, 0); }
+      left_motor_reverse = reverse;  // Update global direction flag
+      if      (reverse == false) { analogWrite(LEFT_MOTOR_FORWARD, spd); analogWrite(LEFT_MOTOR_BACKWARD, 0); }
+      else if (reverse == true) { analogWrite(LEFT_MOTOR_BACKWARD, spd); analogWrite(LEFT_MOTOR_FORWARD, 0); }
     }
     else /*if (i == RIGHT) //no need for condition*/ {
-      if      (reverse == 0) { analogWrite(RIGHT_MOTOR_FORWARD, spd); analogWrite(RIGHT_MOTOR_BACKWARD, 0); }
-      else if (reverse == 1) { analogWrite(RIGHT_MOTOR_BACKWARD, spd); analogWrite(RIGHT_MOTOR_FORWARD, 0); }
+      right_motor_reverse = reverse;  // Update global direction flag
+      if      (reverse == false) { analogWrite(RIGHT_MOTOR_FORWARD, spd); analogWrite(RIGHT_MOTOR_BACKWARD, 0); }
+      else if (reverse == true) { analogWrite(RIGHT_MOTOR_BACKWARD, spd); analogWrite(RIGHT_MOTOR_FORWARD, 0); }
     }
   }
   
