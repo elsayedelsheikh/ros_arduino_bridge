@@ -45,10 +45,9 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 #define USE_BASE
-#define USE_SERVOS
 
 #ifdef USE_BASE
-#define L298_SHEILD_MOTOR_DRIVER
+#define L298_BRIDGE
 #include "motor_driver.h"
 #endif
 
@@ -108,7 +107,7 @@ int runCommand() {
 
     case RESET:
 #ifdef USE_BASE
-      initMotorController();
+      resetMotors();
 #endif
 #ifdef USE_SERVOS
       initServos();

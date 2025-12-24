@@ -1,27 +1,17 @@
-/***************************************************************
-   Motor driver function definitions - by James Nugen
-   *************************************************************/
-
 #ifndef MOTOR_DRIVER_H
 #define MOTOR_DRIVER_H
 
-#ifdef L298_SHEILD_MOTOR_DRIVER
-#include <AFMotor.h>
+#ifdef L298_BRIDGE
 
-#define LFWD_MOTOR 1  // M1
-#define RFWD_MOTOR 4  // M4
-#define LBWD_MOTOR 2  // M2
-#define RBWD_MOTOR 3  // M3
+int LFWD_MOTOR = 5;  // D5
+int LBWD_MOTOR = 6;  // D6
+int RFWD_MOTOR = 9;  // D9
+int RBWD_MOTOR = 10;  // D10
 
-int motorMaxPWM = 100;
-int motorMinPWM = 50;
-
-AF_DCMotor m_lf(LFWD_MOTOR);
-AF_DCMotor m_lb(LBWD_MOTOR);
-AF_DCMotor m_rf(RFWD_MOTOR);
-AF_DCMotor m_rb(RBWD_MOTOR);
+int motorMaxPWM = 150;
 
 void initMotorController();
+void resetMotors();
 void setMotorSpeed(int i, int spd);
 void setMotorSpeeds(int leftSpeed, int rightSpeed);
 

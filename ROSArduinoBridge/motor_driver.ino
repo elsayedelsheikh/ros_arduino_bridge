@@ -8,12 +8,21 @@
    *************************************************************/
 
 #ifdef USE_BASE
-#ifdef L298_SHEILD_MOTOR_DRIVER
+#ifdef L298_BRIDGE
+
 void initMotorController() {
-  m_lf.run(RELEASE);
-  m_rf.run(RELEASE);
-  m_lb.run(RELEASE);
-  m_rb.run(RELEASE);
+  pinMode(LFWD_MOTOR, OUTPUT);
+  pinMode(LBWD_MOTOR, OUTPUT);
+  pinMode(RFWD_MOTOR, OUTPUT);
+  pinMode(RBWD_MOTOR, OUTPUT);
+  resetMotors();
+}
+
+void resetMotors() {
+  digitalWrite(LFWD_MOTOR, LOW);
+  digitalWrite(LBWD_MOTOR, LOW);
+  digitalWrite(RFWD_MOTOR, LOW);
+  digitalWrite(RBWD_MOTOR, LOW);
 }
 
 void setMotorSpeed(int i, int spd) {
@@ -25,31 +34,23 @@ void setMotorSpeed(int i, int spd) {
   }
 
   if (spd > motorMaxPWM) spd = motorMaxPWM;
-  if (spd != 0 && spd < motorMinPWM) spd = motorMinPWM;
 
   if (i == LEFT) {
     if (reverse == 0) {
-      m_lf.run(FORWARD);
-      m_lb.run(FORWARD);
-      m_lf.setSpeed(spd);
-      m_lb.setSpeed(spd);
+      analogWrite(LFWD_MOTOR, spd);
+      digitalWrite(LBWD_MOTOR, LOW);
+
     } else if (reverse == 1) {
-      m_lf.run(BACKWARD);
-      m_lb.run(BACKWARD);
-      m_lf.setSpeed(spd);
-      m_lb.setSpeed(spd);
+      analogWrite(LBWD_MOTOR, spd);
+      digitalWrite(LFWD_MOTOR, LOW);
     }
   } else if (i == RIGHT) {
     if (reverse == 0) {
-      m_rf.run(FORWARD);
-      m_rb.run(FORWARD);
-      m_rf.setSpeed(spd);
-      m_rb.setSpeed(spd);
+      analogWrite(RFWD_MOTOR, spd);
+      digitalWrite(RBWD_MOTOR, LOW);
     } else if (reverse == 1) {
-      m_rf.run(BACKWARD);
-      m_rb.run(BACKWARD);
-      m_rf.setSpeed(spd);
-      m_rb.setSpeed(spd);
+      analogWrite(RBWD_MOTOR, spd);
+      digitalWrite(RFWD_MOTOR, LOW);
     }
   }
 }
