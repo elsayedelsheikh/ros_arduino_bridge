@@ -183,7 +183,7 @@ int runCommand() {
     Serial.println("OK");
     break;
   case PING:
-    Serial.println(Ping(arg1));
+    Serial.println(Ping());
     break;
 #ifdef USE_SERVOS
   case SERVO_WRITE:
@@ -249,30 +249,30 @@ int runCommand() {
 void setup() {
   Serial.begin(BAUDRATE);
 
-// Initialize the motor controller if used */
-#ifdef USE_BASE
-  #ifdef ARDUINO_ENC_COUNTER
-    //set as inputs
-    DDRD &= ~(1<<LEFT_ENC_PIN_A);
-    DDRC &= ~(1<<RIGHT_ENC_PIN_A);
-    
-    //enable pull up resistors
-    PORTD |= (1<<LEFT_ENC_PIN_A);
-    PORTC |= (1<<RIGHT_ENC_PIN_A);
-    
-    // tell pin change mask to listen to left encoder pins
-    PCMSK2 |= (1 << LEFT_ENC_PIN_A);
-    // tell pin change mask to listen to right encoder pins
-    PCMSK1 |= (1 << RIGHT_ENC_PIN_A);
-    
-    // enable PCINT1 and PCINT2 interrupt in the general interrupt mask
-    PCICR |= (1 << PCIE1) | (1 << PCIE2);
+  // Initialize the motor controller if used
+  #ifdef USE_BASE
+    #ifdef ARDUINO_ENC_COUNTER
+      //set as inputs
+      DDRD &= ~(1<<LEFT_ENC_PIN_A);
+      DDRC &= ~(1<<RIGHT_ENC_PIN_A);
+      
+      //enable pull up resistors
+      PORTD |= (1<<LEFT_ENC_PIN_A);
+      PORTC |= (1<<RIGHT_ENC_PIN_A);
+      
+      // tell pin change mask to listen to left encoder pins
+      PCMSK2 |= (1 << LEFT_ENC_PIN_A);
+      // tell pin change mask to listen to right encoder pins
+      PCMSK1 |= (1 << RIGHT_ENC_PIN_A);
+      
+      // enable PCINT1 and PCINT2 interrupt in the general interrupt mask
+      PCICR |= (1 << PCIE1) | (1 << PCIE2);
+    #endif
+    initMotorController();
+    resetPID();
   #endif
-  initMotorController();
-  resetPID();
-#endif
 
-/* Attach servos if used */
+  // Initialize servos if used
   #ifdef USE_SERVOS
     int i;
     for (i = 0; i < N_SERVOS; i++) {
@@ -282,6 +282,9 @@ void setup() {
           servoInitPosition[i]);
     }
   #endif
+
+  // Initialize UltraSonic Sensors if used
+  initUltraSonicPins();
 }
 
 /* Enter the main loop.  Read and parse input from the serial port

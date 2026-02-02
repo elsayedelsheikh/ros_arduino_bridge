@@ -4,10 +4,10 @@
 
 #ifdef L298_MOTOR_DRIVER
 
-int RIGHT_MOTOR_BACKWARD = 6;  
-int LEFT_MOTOR_BACKWARD  = 10;  
-int RIGHT_MOTOR_FORWARD  = 5;  
-int LEFT_MOTOR_FORWARD   = 9;  
+const int RIGHT_MOTOR_BACKWARD = 6;  
+const int LEFT_MOTOR_BACKWARD  = 10;  
+const int RIGHT_MOTOR_FORWARD  = 5;  
+const int LEFT_MOTOR_FORWARD   = 9;  
 
 void initMotorController();
 void resetMotors();
